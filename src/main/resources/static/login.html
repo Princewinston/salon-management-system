@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Salon Glow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Specialized background for Login Page */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('bg.png') !important;
+            background-size: cover !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+        }
+
+        .login-card {
+            background: rgba(0, 0, 0, 0.75);
+            /* Explicit dark overlay */
+            padding: 60px 68px 40px;
+            border-radius: 4px;
+            /* Sharper corners like Netflix/Luxe */
+            width: 100%;
+            max-width: 450px;
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: left;
+            /* Left align like reference */
+            animation: fadeIn 0.8s ease-out;
+            min-height: 500px;
+            /* Taller card */
+        }
+
+        .login-card h2 {
+            margin-bottom: 28px;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+            /* Solid white */
+            background: none;
+            -webkit-text-fill-color: initial;
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .error-message {
+            color: #e50914;
+            background: transparent;
+            /* Minimalist error */
+            border: none;
+            padding: 0;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            text-align: left;
+        }
+
+        .form-help {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            color: #b3b3b3;
+            font-size: 13px;
+        }
+
+        .form-help a {
+            color: #b3b3b3;
+            text-decoration: none;
+        }
+
+        .form-help a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-now {
+            margin-top: 40px;
+            font-size: 16px;
+            color: #737373;
+        }
+
+        .signup-now a {
+            color: white;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .signup-now a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="user-dropdown" style="position: absolute; top: 20px; left: 40px;">
+        <div class="logo" style="font-size: 32px; color: #e50914;">
+            Salon <span style="font-weight:300; color: white; margin-left:5px;">Glow</span>
+        </div>
+    </div>
+
+    <div class="login-card">
+        <h2>Sign In</h2>
+
+        <!-- Error Message Placeholder -->
+        <div id="error-msg" class="error-message">
+            <i class="fas fa-exclamation-circle"></i> Invalid username or password.
+        </div>
+
+        <form action="/perform_login" method="POST">
+            <div class="form-group">
+                <input type="text" id="username" name="username" required placeholder="Email or phone number">
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="password" name="password" required placeholder="Password">
+            </div>
+
+            <button type="submit" class="btn login-btn">Sign In</button>
+
+            <div class="form-help">
+                <div>
+                    <input type="checkbox" id="remember" style="width: auto; margin-right: 5px; accent-color: #b3b3b3;">
+                    <label for="remember" style="display:inline; color:#b3b3b3; font-weight:400;">Remember me</label>
+                </div>
+                <a href="#">Need help?</a>
+            </div>
+        </form>
+
+        <div class="signup-now">
+            <a href="/register.html"
+                style="color: white; font-weight: 700; text-decoration: none; margin-left: 5px;">Sign up
+                now.</a>
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+            <a href="/oauth2/authorization/google" class="btn btn-secondary"
+                style="width: 100%; margin-left: 0; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; background: rgba(255,255,255,0.1);">
+                <i class="fab fa-google"></i> Sign in with Google
+            </a>
+        </div>
+
+        <p style="margin-top: 20px; font-size: 13px; color: #8c8c8c;">
+            This page is protected by Google reCAPTCHA to ensure you're not a bot. <a href="#"
+                style="color:#0071eb; text-decoration:none;">Learn more.</a>
+        </p>
+    </div>
+
+    <script>
+        // Check for error query param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('error')) {
+            document.getElementById('error-msg').style.display = 'block';
+        }
+
+        // Seamless Transition Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('a');
+
+            links.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+
+                    // Only intercept internal navigation links (not # or external)
+                    if (href && href !== '#' && !href.startsWith('http')) {
+                        e.preventDefault();
+                        const card = document.querySelector('.login-card');
+
+                        // Add fade-out class
+                        card.classList.add('fade-out');
+
+                        // Wait for animation to finish then navigate
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 400); // 400ms matches animation duration slightly less to be snappy
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

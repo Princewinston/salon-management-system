@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Glow | Premium Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Salon Glow</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="dashboard.html" id="nav-dashboard" style="display: none;">Admin Dashboard</a>
+            <a href="javascript:void(0)" id="nav-appointments" style="display: none;" onclick="openMyAppointments()">My
+                Appointments</a>
+            <a href="login.html" id="nav-login" class="btn" style="padding: 8px 20px; margin-left: 20px;">Login</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Experience Beauty Reimagined</h1>
+            <p>Discover our premium services tailored just for you. Rate your experience and help us shine brighter.</p>
+            <br>
+            <a href="#services" class="btn">View Services</a>
+        </section>
+
+        <section id="services">
+            <h2 class="section-title">Our Exclusive Services</h2>
+
+            <div class="filter-container">
+                <select id="category-filter" onchange="filterServices(this.value)" class="filter-dropdown">
+                    <option value="All">All Categories</option>
+                    <option value="Hair">Hair</option>
+                    <option value="Skin">Skin</option>
+                    <option value="Nails">Nails</option>
+                    <option value="Spa">Spa</option>
+                    <option value="Special">Special</option>
+                </select>
+            </div>
+
+            <div id="product-list" class="grid">
+                <!-- Products will be loaded here dynamically -->
+            </div>
+        </section>
+        </section>
+
+        <!-- Mobile App Section -->
+        <section id="mobile-app"
+            style="background: linear-gradient(135deg, rgba(136,0,255,0.1), rgba(255,0,85,0.1)); padding: 60px 40px; border-radius: 25px; margin-top: 80px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+            <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">Beauty in Your Pocket</h2>
+            <p
+                style="color: var(--text-muted); font-size: 18px; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Download the Salon Glow app for exclusive offers, faster booking, and 24/7 support.
+            </p>
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn"
+                    style="display: flex; align-items: center; gap: 10px; background: black; border: 1px solid rgba(255,255,255,0.2);">
+                    <i class="fab fa-apple" style="font-size: 24px;"></i>
+                    <div style="text-align: left; line-height: 1.2;">
+                        <span style="font-size: 10px; display: block;">Download on the</span>
+                        <span style="font-size: 16px; font-weight: 600;">App Store</span>
+                    </div>
+                </button>
+                <button class="btn"
+                    style="display: flex; align-items: center; gap: 10px; background: black; border: 1px solid rgba(255,255,255,0.2);">
+                    <i class="fab fa-google-play" style="font-size: 20px;"></i>
+                    <div style="text-align: left; line-height: 1.2;">
+                        <span style="font-size: 10px; display: block;">GET IT ON</span>
+                        <span style="font-size: 16px; font-weight: 600;">Google Play</span>
+                    </div>
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- My Appointments Modal -->
+    <div id="my-appointments-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeModal('my-appointments-modal')">&times;</span>
+            <h2 style="margin-bottom: 20px;">My Appointments</h2>
+            <div id="my-appts-list" style="max-height: 400px; overflow-y: auto;">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- My Appointments Modal -->
+    <div id="my-appointments-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeModal('my-appointments-modal')">&times;</span>
+            <h2 style="margin-bottom: 20px;">My Appointments</h2>
+            <div id="my-appts-list" style="max-height: 400px; overflow-y: auto;">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('booking-modal')">&times;</span>
+            <h2 class="section-title" style="margin-bottom: 20px; font-size: 24px;">Book Appointment</h2>
+            <form id="booking-form" onsubmit="submitBooking(event)">
+                <input type="hidden" id="book-product-id">
+
+                <!-- Step 1: Appointment Details -->
+                <div id="booking-step-1">
+                    <div class="form-group"><label>Name</label><input type="text" id="book-name" required></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="book-email" required></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="book-phone" required></div>
+                    <div class="form-group"><label>Date</label><input type="date" id="book-date" required></div>
+                    <div class="form-group"><label>Time</label><input type="time" id="book-time" required></div>
+
+                    <button type="button" class="btn" style="width: 100%" onclick="goToPayment()">Next: Payment &nbsp;
+                        <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- Step 2: Payment Details -->
+                <div id="booking-step-2" style="display: none; animation: fadeIn 0.3s;">
+                    <h3 style="margin-bottom: 20px; color: var(--accent-purple); font-size: 20px;">Payment Details</h3>
+                    <div class="form-group"><label>Card Number</label><input type="text" id="pay-card"
+                            placeholder="0000 0000 0000 0000" maxlength="19"></div>
+                    <div style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex:1"><label>Expiry</label><input type="text" id="pay-expiry"
+                                placeholder="MM/YY" maxlength="5"></div>
+                        <div class="form-group" style="flex:1"><label>CVV</label><input type="password" id="pay-cvv"
+                                placeholder="123" maxlength="3"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-secondary" onclick="goBackToDetails()"
+                            style="margin-left: 0; flex: 1;">Back</button>
+                        <button type="submit" class="btn" style="flex: 2;" id="confirm-booking-btn">
+                            <span id="btn-text">Pay & Book</span>
+                            <i id="btn-spinner" class="fas fa-spinner fa-spin"
+                                style="display: none; margin-left: 10px;"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('feedback-modal')">&times;</span>
+            <h2 class="section-title" style="margin-bottom: 20px; font-size: 24px;">Share Your Feedback</h2>
+            <form id="feedback-form">
+                <input type="hidden" id="modal-product-id">
+                <div class="form-group">
+                    <label>Rating (1-5)</label>
+                    <select id="feedback-rating">
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Good</option>
+                        <option value="3">3 - Average</option>
+                        <option value="2">2 - Poor</option>
+                        <option value="1">1 - Terrible</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Comments</label>
+                    <textarea id="feedback-comment" rows="4" placeholder="Tell us about your experience..."></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service Detail Modal -->
+    <div id="service-detail-modal" class="modal">
+        <div class="modal-content"
+            style="width: 95%; max-width: 1200px; height: 90vh; padding: 0; overflow-y: auto; display: flex; flex-direction: column; background: #151525; border: 1px solid rgba(255,255,255,0.1);">
+
+            <div
+                style="position: relative; width: 100%; height: 50vh; flex-shrink: 0; background: #1a1a2e; overflow: hidden;">
+                <!-- Blurred Background for aesthetics -->
+                <div id="detail-image-bg"
+                    style="position: absolute; inset: 0; background-size: cover; background-position: center; filter: blur(20px); opacity: 0.5;">
+                </div>
+
+                <!-- Main Image -->
+                <img id="detail-image" src=""
+                    style="position: relative; width: 100%; height: 100%; object-fit: contain; object-position: center; z-index: 2;"
+                    alt="Service Image">
+                <span class="close-btn" onclick="closeModal('service-detail-modal')"
+                    style="position: absolute; z-index: 10; background: rgba(0,0,0,0.6); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; top: 20px; right: 20px; font-size: 24px; transition: 0.3s; cursor: pointer;">&times;</span>
+            </div>
+
+            <div style="padding: 40px;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; gap: 20px;">
+                    <div>
+                        <h2 id="detail-title"
+                            style="font-size: 48px; font-weight: 800; background: linear-gradient(90deg, #fff, #a0a0b0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;">
+                            Service Name</h2>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span
+                                style="background: rgba(136, 0, 255, 0.2); color: #b780ff; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: 600;">Premium</span>
+                            <span id="detail-rating-count" style="color: #ffc107;"><i class="fas fa-star"></i> 0.0 (0
+                                Reviews)</span>
+                        </div>
+                    </div>
+                    <span id="detail-price"
+                        style="font-size: 42px; color: var(--secondary-color); font-weight: 700; text-shadow: 0 0 20px rgba(255,0,85,0.4);">$00</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 50px; margin-top: 30px;">
+                    <div>
+                        <h3
+                            style="font-size: 24px; margin-bottom: 15px; border-bottom: 2px solid var(--accent-purple); display: inline-block; padding-bottom: 5px;">
+                            About This Service</h3>
+                        <p id="detail-desc"
+                            style="font-size: 18px; color: var(--text-muted); line-height: 1.8; margin-bottom: 40px;">
+                            Description goes here.
+                        </p>
+
+                        <h3 style="font-size: 24px; margin-bottom: 20px;">Customer Stories</h3>
+                        <div id="detail-reviews"
+                            style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
+                            <!-- Dynamic reviews loaded here -->
+                        </div>
+
+                        <!-- Review Form -->
+                        <div
+                            style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                            <h4 style="margin-bottom: 15px; color: var(--text-color);">Write a Review</h4>
+                            <form id="review-form" onsubmit="submitReview(event)">
+                                <div style="margin-bottom: 15px;">
+                                    <label
+                                        style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted);">Rating</label>
+                                    <select id="review-rating"
+                                        style="width: 100%; background: #1a1a2e; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px; border-radius: 8px;">
+                                        <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                                        <option value="4">⭐⭐⭐⭐ (4)</option>
+                                        <option value="3">⭐⭐⭐ (3)</option>
+                                        <option value="2">⭐⭐ (2)</option>
+                                        <option value="1">⭐ (1)</option>
+                                    </select>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <label
+                                        style="display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-muted);">Comment</label>
+                                    <textarea id="review-comment" rows="3" placeholder="Share your experience..."
+                                        style="width: 100%; background: #1a1a2e; border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px; border-radius: 8px;"
+                                        required></textarea>
+                                </div>
+                                <button type="submit" class="btn" style="width: 100%; padding: 10px;">Submit
+                                    Review</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; height: fit-content; border: 1px solid rgba(255,255,255,0.05);">
+                        <h3 style="margin-bottom: 20px;">Ready to Transform?</h3>
+                        <ul style="list-style: none; margin-bottom: 30px; color: var(--text-muted);">
+                            <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                    style="color: var(--accent-purple); margin-right: 10px;"></i> Expert Stylists</li>
+                            <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                    style="color: var(--accent-purple); margin-right: 10px;"></i> Premium Products</li>
+                            <li style="margin-bottom: 15px;"><i class="fas fa-check-circle"
+                                    style="color: var(--accent-purple); margin-right: 10px;"></i> 100% Satisfaction</li>
+                        </ul>
+                        <button id="detail-book-btn" class="btn"
+                            style="width: 100%; font-size: 18px; padding: 15px; margin-bottom: 15px;">Book Now</button>
+                        <button class="btn btn-secondary" onclick="closeModal('service-detail-modal')"
+                            style="width: 100%; margin-left: 0;">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancellation Modal -->
+    <div id="cancel-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeModal('cancel-modal')">&times;</span>
+            <h2 class="section-title" style="font-size: 24px;">Cancel Appointment</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Please provide a reason for cancellation:</p>
+            <form onsubmit="submitCancellation(event)">
+                <input type="hidden" id="cancel-appt-id">
+                <textarea id="cancel-reason" rows="4"
+                    style="width:100%; padding:10px; background:#1a1a2e; border:1px solid rgba(255,255,255,0.2); color:white; border-radius:8px; margin-bottom:20px;"
+                    required placeholder="Reason..."></textarea>
+                <button type="submit" class="btn" style="width:100%; background: #ff0055;">Confirm Cancellation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal" style="z-index: 2000;">
+        <div class="modal-content"
+            style="max-width: 400px; text-align: center; padding: 50px; background: radial-gradient(circle at top, #1c1c2e, #11111f); border: 2px solid var(--accent-purple);">
+            <div
+                style="width: 80px; height: 80px; background: rgba(0, 255, 136, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px;">
+                <i class="fas fa-check" style="font-size: 40px; color: #00ff88;"></i>
+            </div>
+            <h2 style="font-size: 32px; margin-bottom: 10px; color: white;">Awesome!</h2>
+            <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 30px;">Your appointment has been
+                confirmed and payment was successful.</p>
+            <button class="btn"
+                style="width: 100%; background: linear-gradient(90deg, #00ff88, #00ca6d); color: #004d2c; font-weight: 800;"
+                onclick="closeModal('success-modal')">Continue</button>
+        </div>
+    </div>
+
+    <script src="script.js?v=6"></script>
+</body>
+
+</html>
