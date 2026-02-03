@@ -1,7 +1,6 @@
 package com.salon.salon_management.dto;
 
 import java.util.List;
-import java.util.Map;
 
 public class AnalyticsDTO {
     private List<String> revenueLabels; // e.g. Mon, Tue

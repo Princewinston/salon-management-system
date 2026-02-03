@@ -185,9 +185,12 @@ function renderProducts(products) {
         card.style.animation = 'fadeIn 0.5s ease-out';
         card.style.cursor = 'pointer';
 
-        // Check if user has already booked this service (and not cancelled)
+        // Check if user has already booked this service (and not cancelled, and is in future)
         const isBooked = userAppointments.some(appt =>
-            appt.service && appt.service.productId === product.productId && appt.status !== 'Cancelled'
+            appt.service &&
+            appt.service.productId === product.productId &&
+            appt.status !== 'Cancelled' &&
+            isAppointmentFuture(appt)
         );
 
         // Random Rating Logic
@@ -245,9 +248,12 @@ window.openServiceDetail = function (productId) {
     // Setup Book Button
     const btn = document.getElementById('detail-book-btn');
 
-    // Check if user has already booked this service
+    // Check if user has already booked this service and it is in the future
     const isBooked = userAppointments.some(appt =>
-        appt.service && appt.service.productId === productId && appt.status !== 'Cancelled'
+        appt.service &&
+        appt.service.productId === productId &&
+        appt.status !== 'Cancelled' &&
+        isAppointmentFuture(appt)
     );
 
     if (isBooked) {
@@ -661,3 +667,16 @@ async function submitCancellation(e) {
         }
     } catch (e) { console.error(e); }
 }
+
+function isAppointmentFuture(appt) {
+    if (!appt.appointmentDate || !appt.appointmentTime) return false;
+
+    // Combine date and time
+    // format: YYYY-MM-DD and HH:MM:SS or HH:MM
+    const dateTimeStr = `${appt.appointmentDate}T${appt.appointmentTime}`;
+    const apptDate = new Date(dateTimeStr);
+    const now = new Date();
+
+    return apptDate > now;
+}
+
